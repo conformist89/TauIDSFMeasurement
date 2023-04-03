@@ -27,7 +27,9 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
   std::vector<std::string> mc_processes;
   // Signal processes
   if (embedding){
-      std::vector<std::string> signals = {"EMB"};
+    //   std::vector<std::string> signals = {"EMB"};
+      std::vector<std::string> signals = {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive" };
+
       mc_processes =
                   {"TT", "TTL", "TTJ", "W", "ZJ", "ZL", "VV", "VVL", "VVJ", "ST"};
   }
@@ -92,19 +94,22 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
   // 100% uncorrelated for embedded
   cb.cp()
       .channel({"mt", "mm"})
-      .process({"EMB", "MUEMB"})
+    //   .process({"EMB", "MUEMB"})
+    //   .process({"EMB", "MUEMB"})
+      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "MUEMB"})
       .AddSyst(cb, "CMS_eff_trigger_emb_mt_$ERA", "shape", SystMap<>::init(1.00));
 
   // Muon ID
   cb.cp()
-      .channel({"mt"})
+      .channel({"mt", "mm"})
       .process(mc_processes)
       .AddSyst(cb, "CMS_eff_mc_m", "lnN", SystMap<>::init(1.014));
 
   // Muon ID
   cb.cp()
       .channel({"mt", "mm"})
-      .process({"EMB", "MUEMB"})
+    //   .process({"EMB", "MUEMB"})
+      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "MUEMB"})
       .AddSyst(cb, "CMS_eff_emb_m", "lnN", SystMap<>::init(1.014));
 
   // MC + embedded correlated uncertainty
@@ -112,15 +117,28 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
   // Muon ID
   cb.cp()
       .channel({"mt", "mm"})
-      .process(JoinStr({mc_processes, {"EMB", "MUEMB"}}))
+      .process(JoinStr({mc_processes, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "MUEMB"}}))
+    //   .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "MUEMB"})
       .AddSyst(cb, "CMS_eff_m", "lnN", SystMap<>::init(1.014));
 
-  // Control region uncertainties
-  // TODO: Check how to correlate with embedded if embedded is used
+//   Control region uncertainties
+//   TODO: Check how to correlate with embedded if embedded is used
   cb.cp()
       .channel({"mm"})
       .process(mc_processes)
-      .AddSyst(cb, "CMS_eff_mc_m", "lnN", SystMap<>::init(1.04));
+      .AddSyst(cb, "CMS_eff_mc_m_trail", "lnN", SystMap<>::init(1.014));
+
+  cb.cp()
+      .channel({"mm"})
+      .process({"MUEMB"})
+      .AddSyst(cb, "CMS_eff_emb_m_trail", "lnN", SystMap<>::init(1.014));
+
+  cb.cp()
+      .channel({"mm"})
+      .process(JoinStr({mc_processes, {"MUEMB"}}))
+      .AddSyst(cb, "CMS_eff_m_trail", "lnN", SystMap<>::init(1.014));
+
+
 
   // ##########################################################################
   // Uncertainty: b-tag and mistag efficiency
@@ -202,45 +220,52 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
 if (not tauES) {
   cb.cp()
       .channel({"mt"})
-      // .process({"EMB", "jetFakes", "QCDEMB"})
-      .process({"EMB", "jetFakes"})
+    //   .process({"EMB", "jetFakes", "QCDEMB"})
+      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "jetFakes", "QCDEMB"})
       .AddSyst(cb, "CMS_scale_t_emb_1prong_$ERA", "shape", SystMap<>::init(0.71));
 
   cb.cp()
       .channel({"mt"})
-      .process({"EMB", "jetFakes"})
+    //   .process({"EMB", "jetFakes"})
+      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "jetFakes"})
       .AddSyst(cb, "CMS_scale_t_emb_1prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
 
   cb.cp()
       .channel({"mt"})
-      .process({"EMB", "jetFakes"})
+    //   .process({"EMB", "jetFakes"})
+      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "jetFakes"})
       .AddSyst(cb, "CMS_scale_t_emb_3prong_$ERA", "shape", SystMap<>::init(0.71));
   cb.cp()
       .channel({"mt"})
-      .process({"EMB", "jetFakes"})
+    //   .process({"EMB", "jetFakes"})
+      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "jetFakes"})
       .AddSyst(cb, "CMS_scale_t_emb_3prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
 
 //   MC + embedded correlated uncertainty
 
   cb.cp()
       .channel({"mt"})
-      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+       .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive"}}))
       // .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes", "QCD"}, {"EMB", "QCDEMB"}}))
       .AddSyst(cb, "CMS_scale_t_1prong_$ERA", "shape", SystMap<>::init(0.71));
 
   cb.cp()
       .channel({"mt"})
-      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive"}}))
       .AddSyst(cb, "CMS_scale_t_1prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
 
   cb.cp()
       .channel({"mt"})
-      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive"}}))
       .AddSyst(cb, "CMS_scale_t_3prong_$ERA", "shape", SystMap<>::init(0.71));
 
   cb.cp()
       .channel({"mt"})
-      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive"}}))
       .AddSyst(cb, "CMS_scale_t_3prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
 }
 
@@ -483,13 +508,15 @@ if (not tauES) {
   // Embedded Normalization: No Lumi, Zjxsec information used, instead derived from data using dimuon selection efficiency
   cb.cp()
       .channel({"mt", "mm"})
-      .process({"EMB", "MUEMB"})
+    //   .process({"EMB", "MUEMB"})
+      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive", "MUEMB"})
       .AddSyst(cb, "CMS_htt_doublemutrg_$ERA", "lnN", SystMap<>::init(1.04));
 
   // TTbar contamination in embedded events: 10% shape uncertainty of assumed ttbar->tautau event shape
   cb.cp()
     .channel({"mt"})
-    .process({"EMB"})
+    // .process({"EMB"})
+    .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM_0" "EMB_DM_1", "EMB_DM_10_11", "EMB_Inclusive"})
     .AddSyst(cb, "CMS_htt_emb_ttbar_$ERA", "shape", SystMap<>::init(1.00));
 
 //   cb.cp()

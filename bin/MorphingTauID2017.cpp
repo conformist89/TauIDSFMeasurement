@@ -146,14 +146,82 @@ int main(int argc, char **argv) {
   // Define categories
   map<string, Categories> cats;
   // TODO: Introduce maps for decay mode dependent splitting.
+  vector<string> sig_procs;
   if (categories == "all") {
     cats["mt"] = {
-        {1, "mt_Pt20to25"}, {2, "mt_Pt25to30"}, {3, "mt_Pt30to35"},
-        {4, "mt_Pt35to40"}, {5, "mt_PtGt40"},   {6, "mt_Inclusive"},
-        {7, "mt_DM0"},      {8, "mt_DM1"},      {9, "mt_DM10_11"},
+         {1, "mt_Pt20to25"}, {2, "mt_Pt25to30"}, {3, "mt_Pt30to35"},
+         {4, "mt_Pt35to40"}, {5, "mt_PtGt40"},   {6, "mt_Inclusive"},
+         {7, "mt_DM0"},      {8, "mt_DM1"},      {9, "mt_DM10_11"},
     };
-  } else
-    throw std::runtime_error("Given categorization is not known.");
+  
+
+  }else if (categories == "Pt20to25"){
+        cats["mt"] = {
+         {1, "mt_Pt20to25"}
+    };
+
+    sig_procs = {"EMB_Pt20to25"};
+    
+
+  }else if (categories == "Pt25to30"){
+        cats["mt"] = {
+         {2, "mt_Pt25to30"}
+    };
+    sig_procs = {"EMB_Pt25to30"};
+
+    // std::cout <<":::::::::::THIS IS MY SIGNAL::::::"  << sig_procs[0] << std:: endl;
+  
+  }else if (categories == "Pt30to35"){
+        cats["mt"] = {
+         {3, "mt_Pt30to35"}
+    };
+    sig_procs = {"EMB_Pt30to35"};
+  }
+
+  else if (categories == "Pt35to40"){
+        cats["mt"] = {
+         {4, "mt_Pt35to40"}
+    };
+    sig_procs = {"EMB_Pt35to40"};
+  }
+
+    else if (categories == "PtGt40"){
+        cats["mt"] = {
+         {5, "mt_PtGt40"}
+    };
+    sig_procs = {"EMB_PtGt40"};
+  }
+
+    else if (categories == "Inclusive"){
+        cats["mt"] = {
+         {6, "mt_Inclusive"}
+    };
+    sig_procs = {"EMB_Inclusive"};
+  }
+
+    else if (categories == "DM0"){
+        cats["mt"] = {
+         {7, "mt_DM0"}
+    };
+    sig_procs = {"EMB_DM0"};
+  }
+
+    else if (categories == "DM1"){
+        cats["mt"] = {
+         {8, "mt_DM1"}
+    };
+    sig_procs = {"EMB_DM1"};
+  }
+
+    else if (categories == "DM10_11"){
+        cats["mt"] = {
+         {9, "mt_DM10_11"}
+    };
+    sig_procs = {"EMB_DM10_11"};
+  }
+  
+  else{
+    throw std::runtime_error("Given categorization is not known.");}
   // else if (categories == "pt_binned") {
   //   cats["mt"] = {
   //       {1, "mt_Pt20to25"}, {2, "mt_Pt25to30"}, {3, "mt_Pt30to35"},
@@ -187,9 +255,10 @@ int main(int argc, char **argv) {
       {100, "mm_control_region"},
   };
 
-  vector<string> sig_procs = {"EMB"};
+  // vector<string> sig_procs = {"EMB"};
+  // vector<string> sig_procs = {"EMB_Pt25to30"};
   vector<string> masses = {"125"};
-
+  std::cout <<":::::::::::THIS IS MY SIGNAL::::::" << sig_procs[0] << std:: endl;
   // Create combine harverster object
   ch::CombineHarvester cb;
 
@@ -208,6 +277,10 @@ int main(int argc, char **argv) {
     cb.AddObservations({"*"}, {"htt"}, {era_tag}, {chn}, cats[chn]);
     cb.AddProcesses({"*"}, {"htt"}, {era_tag}, {chn}, bkg_procs[chn], cats[chn],
                     false);
+
+    std::cout << "#################### I have to add this process: " << sig_procs[0] << std::endl;
+
+
     cb.AddProcesses(masses, {"htt"}, {era_tag}, {chn}, sig_procs, cats[chn],
                     true);
   }
@@ -226,7 +299,7 @@ int main(int argc, char **argv) {
       for (unsigned int i = 1; i <= cats[chn].size(); i++) {
         cb.cp()
             .channel({chn})
-            .bin_id({static_cast<int>(i)})
+            // .bin_id({static_cast<int>(i)})
             .process(sig_procs)
             .ExtractShapes(input_dir[chn] + "htt_" + chn + ".inputs-sm-" +
                                era_tag + postfix + ".root",
@@ -238,6 +311,9 @@ int main(int argc, char **argv) {
               << input_dir[chn] + "htt_" + chn + ".inputs-sm-" + era_tag +
                      postfix + ".root"
               << std::endl;
+
+    std::cout << "[INFO] I have to add this process: " << sig_procs[0] << std::endl;
+    
     // // TODO: Uncomment for check of mm fit to obtain start value for full fit.
     // if (chn == "mm") {
     //     cb.cp().channel({chn}).bin_id({static_cast<int>(100)}).process(sig_procs).ExtractShapes(
@@ -249,10 +325,14 @@ int main(int argc, char **argv) {
 
   // Delete processes with 0 yield
   cb.FilterProcs([&](ch::Process *p) {
+
+    std::cout << ch::Process::PrintHeader << *p << std::endl;
+    std::cout << "Process rate: " << p->rate() << std::endl;
     bool null_yield = !(p->rate() > 0.0);
     if (null_yield) {
       std::cout << "[WARNING] Removing process with null yield: \n ";
       std::cout << ch::Process::PrintHeader << *p << "\n";
+      
       cb.FilterSysts([&](ch::Systematic *s) {
         bool remove_syst = (MatchingProcess(*p, *s));
         return remove_syst;
@@ -266,17 +346,17 @@ int main(int argc, char **argv) {
   cb.FilterSysts([&](ch::Systematic *s) {
     if (s->type() == "shape") {
       if (s->shape_u()->Integral() == 0.0) {
-        std::cout
-            << "[WARNING] Removing systematic with null yield in up shift:"
-            << std::endl;
-        std::cout << ch::Systematic::PrintHeader << *s << "\n";
+        // std::cout
+        //     << "[WARNING] Removing systematic with null yield in up shift:"
+        //     << std::endl;
+        // std::cout << ch::Systematic::PrintHeader << *s << "\n";
         return true;
       }
       if (s->shape_d()->Integral() == 0.0) {
-        std::cout
-            << "[WARNING] Removing systematic with null yield in down shift:"
-            << std::endl;
-        std::cout << ch::Systematic::PrintHeader << *s << "\n";
+        // std::cout
+        //     << "[WARNING] Removing systematic with null yield in down shift:"
+        //     << std::endl;
+        // std::cout << ch::Systematic::PrintHeader << *s << "\n";
         return true;
       }
     }
@@ -299,8 +379,8 @@ int main(int argc, char **argv) {
       if (std::abs(value_u - 1.0) + std::abs(value_d - 1.0) <
           err_u / yield_u + err_d / yield_d) {
         count_lnN++;
-        std::cout << "[WARNING] Replacing systematic by lnN:" << std::endl;
-        std::cout << ch::Systematic::PrintHeader << *s << "\n";
+        // std::cout << "[WARNING] Replacing systematic by lnN:" << std::endl;
+        // std::cout << ch::Systematic::PrintHeader << *s << "\n";
         s->set_type("lnN");
         bool up_is_larger = (value_u > value_d);
         if (value_u < 1.0)
@@ -327,6 +407,18 @@ int main(int argc, char **argv) {
   });
   std::cout << "[WARNING] Turned " << count_lnN << " of " << count_all
             << " checked systematics into lnN:" << std::endl;
+
+  // for(int i=1; i<=5; i++){
+
+  //   cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
+
+  // }
+
+  //   for(int i=1; i<=5; i++){
+
+  //   cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_scale_t_emb_1prong1pizero_Run2018", "CMS_scale_t_emb_1prong1pizero_mt_"+std::to_string(i)+"Run2018");
+
+  // }
 
   // Replacing observation with the sum of the backgrounds (Asimov data)
   // useful to be able to check this, so don't do the replacement
@@ -487,7 +579,7 @@ int main(int argc, char **argv) {
   string output_prefix = "output/";
   ch::CardWriter writer(output_prefix + output_folder + "/$TAG/$BIN.txt",
                         output_prefix + output_folder + "/$TAG/htt_input_" +
-                            era_tag + ".root");
+                            era_tag +categories + ".root");
 
   // We're not using mass as an identifier - which we need to tell the
   // CardWriter
@@ -496,7 +588,7 @@ int main(int argc, char **argv) {
 
   // Set verbosity
   if (verbose)
-    writer.SetVerbosity(1);
+    writer.SetVerbosity(3);
 
   // Write datacards combined and per channel
   writer.WriteCards("cmb", cb);
@@ -527,7 +619,7 @@ int main(int argc, char **argv) {
   }
 
   if (verbose)
-    cb.PrintAll();
+    // cb.PrintAll();
 
   cout << "[INFO] Done producing datacards.\n";
 }
