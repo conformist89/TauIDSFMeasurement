@@ -280,7 +280,7 @@ int main(int argc, char **argv) {
 
     std::cout << "#################### I have to add this process: " << sig_procs[0] << std::endl;
 
-
+    
     cb.AddProcesses(masses, {"htt"}, {era_tag}, {chn}, sig_procs, cats[chn],
                     true);
   }
@@ -413,6 +413,12 @@ int main(int argc, char **argv) {
   //   cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
 
   // }
+
+  for(int i=7; i<=9; i++){
+
+    cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
+
+  }
 
   //   for(int i=1; i<=5; i++){
 
@@ -618,8 +624,8 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (verbose)
-    // cb.PrintAll();
+  // if (verbose)
+  cb.PrintAll();
 
   cout << "[INFO] Done producing datacards.\n";
 }
