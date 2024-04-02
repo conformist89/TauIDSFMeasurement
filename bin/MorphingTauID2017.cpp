@@ -26,6 +26,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <iomanip> // Add this header for std::setprecision
 
 using namespace std;
 using boost::starts_with;
@@ -143,7 +144,96 @@ int main(int argc, char **argv) {
   bkg_procs["mt"] = bkgs;
   bkg_procs["mm"] = bkgs_mm;
 
-  // Define categories
+  // vector<string> es_shifts;
+  // for (float i = -2.5; i <= 2.5; i += 0.1) {
+  //   es_shifts.push_back(std::to_string(i));
+  // }
+vector<string> es_shifts;
+es_shifts.reserve(51);
+es_shifts.emplace_back("-2.5");
+es_shifts.emplace_back("-2.4");
+es_shifts.emplace_back("-2.3");
+es_shifts.emplace_back("-2.2");
+es_shifts.emplace_back("-2.1");
+es_shifts.emplace_back("-2.0");
+es_shifts.emplace_back("-1.9");
+es_shifts.emplace_back("-1.8");
+es_shifts.emplace_back("-1.7");
+es_shifts.emplace_back("-1.6");
+es_shifts.emplace_back("-1.5");
+es_shifts.emplace_back("-1.4");
+es_shifts.emplace_back("-1.3");
+es_shifts.emplace_back("-1.2");
+es_shifts.emplace_back("-1.1");
+es_shifts.emplace_back("-1.0");
+es_shifts.emplace_back("-0.9");
+es_shifts.emplace_back("-0.8");
+es_shifts.emplace_back("-0.7");
+es_shifts.emplace_back("-0.6");
+es_shifts.emplace_back("-0.5");
+es_shifts.emplace_back("-0.4");
+es_shifts.emplace_back("-0.3");
+es_shifts.emplace_back("-0.2");
+es_shifts.emplace_back("-0.1");
+es_shifts.emplace_back("0.0");
+es_shifts.emplace_back("0.1");
+es_shifts.emplace_back("0.2");
+es_shifts.emplace_back("0.3");
+es_shifts.emplace_back("0.4");
+es_shifts.emplace_back("0.5");
+es_shifts.emplace_back("0.6");
+es_shifts.emplace_back("0.7");
+es_shifts.emplace_back("0.8");
+es_shifts.emplace_back("0.9");
+es_shifts.emplace_back("1.0");
+es_shifts.emplace_back("1.1");
+es_shifts.emplace_back("1.2");
+es_shifts.emplace_back("1.3");
+es_shifts.emplace_back("1.4");
+es_shifts.emplace_back("1.5");
+es_shifts.emplace_back("1.6");
+es_shifts.emplace_back("1.7");
+es_shifts.emplace_back("1.8");
+es_shifts.emplace_back("1.9");
+es_shifts.emplace_back("2.0");
+es_shifts.emplace_back("2.1");
+es_shifts.emplace_back("2.2");
+es_shifts.emplace_back("2.3");
+es_shifts.emplace_back("2.4");
+es_shifts.emplace_back("2.5");
+
+  
+int es_shits_size = es_shifts.size(); 
+
+std::vector<std::string> es_shapes_cats(es_shits_size * 3);
+for(int i = 0; i < es_shits_size; ++i) {
+  es_shapes_cats[i] = "DM0_"+es_shifts[i];
+  es_shapes_cats[i + es_shits_size] = "DM1_"+es_shifts[i];
+  es_shapes_cats[i + 2 * es_shits_size] = "DM10_11_"+es_shifts[i];
+}
+
+std::cout << "Elements of es_shapes_cats vector:" << std::endl;
+for (const auto& element : es_shapes_cats) {
+  std::cout << element << std::endl;
+}
+
+
+int es_shapes_cats_size =  es_shapes_cats.size();
+
+// copilot please create a map of type <string, Categories> like this one map<string, Categories> es_shifts_cats
+map<string, Categories> es_shifts_cats_map;
+for (int i = 0; i < es_shapes_cats_size; ++i) {
+  es_shifts_cats_map[es_shapes_cats[i]] = {
+    {10 + i, es_shapes_cats[i]}
+  };
+}
+
+vector<string>es_signals = {"es_shifts"};
+
+// Define MSSM model-independent mass parameter MH
+RooRealVar ES("ES", "ES", 0.0, -2.5, 2.5);
+ES.setConstant(true);
+
   map<string, Categories> cats;
   // TODO: Introduce maps for decay mode dependent splitting.
   vector<string> sig_procs;
@@ -255,8 +345,9 @@ int main(int argc, char **argv) {
       {100, "mm_control_region"},
   };
 
-  // vector<string> sig_procs = {"EMB"};
-  // vector<string> sig_procs = {"EMB_Pt25to30"};
+
+
+
   vector<string> masses = {"125"};
   std::cout <<":::::::::::THIS IS MY SIGNAL::::::" << sig_procs[0] << std:: endl;
   // Create combine harverster object
@@ -273,6 +364,8 @@ int main(int argc, char **argv) {
   else
     std::runtime_error("Given era is not implemented.");
 
+
+
   for (auto chn : chns) {
     cb.AddObservations({"*"}, {"htt"}, {era_tag}, {chn}, cats[chn]);
     cb.AddProcesses({"*"}, {"htt"}, {era_tag}, {chn}, bkg_procs[chn], cats[chn],
@@ -283,6 +376,8 @@ int main(int argc, char **argv) {
     
     cb.AddProcesses(masses, {"htt"}, {era_tag}, {chn}, sig_procs, cats[chn],
                     true);
+    // adding ES shifts
+    cb.AddProcesses(es_shifts, {"htt"}, {era_tag}, {chn}, es_signals, cats[chn], true);
   }
 
   // Add systematics
@@ -304,6 +399,15 @@ int main(int argc, char **argv) {
             .ExtractShapes(input_dir[chn] + "htt_" + chn + ".inputs-sm-" +
                                era_tag + postfix + ".root",
                            "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
+
+
+            // extracting ES shifts
+            cb.cp()
+               .channel({chn})
+               .process(mssm_bbH_signals)
+               .ExtractShapes(input_dir[chn] + "htt_" + chn + ".inputs-sm-" +
+                                era_tag + postfix + ".root",
+                              "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
       }
     }
     std::cout << "[INFO] Extracted shapes for channel " << chn << std::endl;
@@ -408,17 +512,19 @@ int main(int argc, char **argv) {
   std::cout << "[WARNING] Turned " << count_lnN << " of " << count_all
             << " checked systematics into lnN:" << std::endl;
 
+  // systematics disentanglement among different pT and DM bins            
+
   // for(int i=1; i<=5; i++){
 
   //   cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
 
   // }
 
-  for(int i=7; i<=9; i++){
+  // for(int i=7; i<=9; i++){
 
-    cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
+  //   cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
 
-  }
+  // }
 
   //   for(int i=1; i<=5; i++){
 
@@ -578,6 +684,8 @@ int main(int argc, char **argv) {
   // This function modifies every entry to have a standardised bin name of
   // the form: {analysis}_{channel}_{bin_id}_{era}
   ch::SetStandardBinNames(cb, "$ANALYSIS_$CHANNEL_$BINID_$ERA");
+
+  cb.SetAutoMCStats(cb, 0.);
 
   // Write out datacards. Naming convention important for rest of workflow. We
   // make one directory per chn-cat, one per chn and cmb. In this code we only

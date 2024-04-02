@@ -175,106 +175,106 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
   //// correlated part between ERAs
   // MC uncorrelated uncertainty
 // TODO set to correlated again once embedding is available (0.71)
-  if (tauES) {
-        cb.cp()
-            .channel({"mt"})
-            .process({{"ZTT", "TTT", "TTL", "VVT", "VVL"}})
-            // .process({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes", "QCD"}}) // TODO: Check if this should be propagated to QCD
-            .AddSyst(cb, "CMS_scale_t_1prong_$ERA", "shape", SystMap<>::init(1.00));
+//   if (tauES) {
+//         cb.cp()
+//             .channel({"mt"})
+//             .process({{"ZTT", "TTT", "TTL", "VVT", "VVL"}})
+//             // .process({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes", "QCD"}}) // TODO: Check if this should be propagated to QCD
+//             .AddSyst(cb, "CMS_scale_t_1prong_$ERA", "shape", SystMap<>::init(1.00));
 
-        cb.cp()
-            .channel({"mt"})
-            .process({"ZTT", "TTT", "TTL", "VVT", "VVL"})
-            .AddSyst(cb, "CMS_scale_t_1prong1pizero_$ERA", "shape",
-                    SystMap<>::init(1.00));
+//         cb.cp()
+//             .channel({"mt"})
+//             .process({"ZTT", "TTT", "TTL", "VVT", "VVL"})
+//             .AddSyst(cb, "CMS_scale_t_1prong1pizero_$ERA", "shape",
+//                     SystMap<>::init(1.00));
 
-        cb.cp()
-            .channel({"mt"})
-            .process({"ZTT", "TTT", "TTL", "VVT", "VVL"})
-            .AddSyst(cb, "CMS_scale_t_3prong_$ERA", "shape", SystMap<>::init(1.00));
+//         cb.cp()
+//             .channel({"mt"})
+//             .process({"ZTT", "TTT", "TTL", "VVT", "VVL"})
+//             .AddSyst(cb, "CMS_scale_t_3prong_$ERA", "shape", SystMap<>::init(1.00));
 
-        cb.cp()
-            .channel({"mt"})
-            .process({"ZTT", "TTT", "TTL", "VVT", "VVL"})
-            .AddSyst(cb, "CMS_scale_t_3prong1pizero_$ERA", "shape", SystMap<>::init(1.00));
-    }
-    else{
-        cb.cp()
-        .channel({"mt"})
-        .process({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}})
-        // .process({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes", "QCD"}}) // TODO: Check if this should be propagated to QCD
-        .AddSyst(cb, "CMS_scale_t_1prong_$ERA", "shape", SystMap<>::init(1.00));
+//         cb.cp()
+//             .channel({"mt"})
+//             .process({"ZTT", "TTT", "TTL", "VVT", "VVL"})
+//             .AddSyst(cb, "CMS_scale_t_3prong1pizero_$ERA", "shape", SystMap<>::init(1.00));
+//     }
+//     else{
+//         cb.cp()
+//         .channel({"mt"})
+//         .process({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}})
+//         // .process({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes", "QCD"}}) // TODO: Check if this should be propagated to QCD
+//         .AddSyst(cb, "CMS_scale_t_1prong_$ERA", "shape", SystMap<>::init(1.00));
 
-    cb.cp()
-        .channel({"mt"})
-        .process({"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"})
-        .AddSyst(cb, "CMS_scale_t_1prong1pizero_$ERA", "shape",
-                SystMap<>::init(1.00));
+//     cb.cp()
+//         .channel({"mt"})
+//         .process({"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"})
+//         .AddSyst(cb, "CMS_scale_t_1prong1pizero_$ERA", "shape",
+//                 SystMap<>::init(1.00));
 
-    cb.cp()
-        .channel({"mt"})
-        .process({"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"})
-        .AddSyst(cb, "CMS_scale_t_3prong_$ERA", "shape", SystMap<>::init(1.00));
+//     cb.cp()
+//         .channel({"mt"})
+//         .process({"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"})
+//         .AddSyst(cb, "CMS_scale_t_3prong_$ERA", "shape", SystMap<>::init(1.00));
 
-    cb.cp()
-        .channel({"mt"})
-        .process({"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"})
-        .AddSyst(cb, "CMS_scale_t_3prong1pizero_$ERA", "shape", SystMap<>::init(1.00));
-    }
+//     cb.cp()
+//         .channel({"mt"})
+//         .process({"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"})
+//         .AddSyst(cb, "CMS_scale_t_3prong1pizero_$ERA", "shape", SystMap<>::init(1.00));
+//     }
 
-  // Embedded uncorrelated uncertainty
-// TODO check EMB ES
-if (not tauES) {
-  cb.cp()
-      .channel({"mt"})
-    //   .process({"EMB", "jetFakes", "QCDEMB"})
-      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes", "QCDEMB"})
-      .AddSyst(cb, "CMS_scale_t_emb_1prong_$ERA", "shape", SystMap<>::init(0.71));
+//   // Embedded uncorrelated uncertainty
+// // TODO check EMB ES
+// if (not tauES) {
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process({"EMB", "jetFakes", "QCDEMB"})
+//       .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes", "QCDEMB"})
+//       .AddSyst(cb, "CMS_scale_t_emb_1prong_$ERA", "shape", SystMap<>::init(0.71));
 
-  cb.cp()
-      .channel({"mt"})
-    //   .process({"EMB", "jetFakes"})
-      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes"})
-      .AddSyst(cb, "CMS_scale_t_emb_1prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process({"EMB", "jetFakes"})
+//       .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes"})
+//       .AddSyst(cb, "CMS_scale_t_emb_1prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
 
-  cb.cp()
-      .channel({"mt"})
-    //   .process({"EMB", "jetFakes"})
-      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes"})
-      .AddSyst(cb, "CMS_scale_t_emb_3prong_$ERA", "shape", SystMap<>::init(0.71));
-  cb.cp()
-      .channel({"mt"})
-    //   .process({"EMB", "jetFakes"})
-      .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes"})
-      .AddSyst(cb, "CMS_scale_t_emb_3prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process({"EMB", "jetFakes"})
+//       .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes"})
+//       .AddSyst(cb, "CMS_scale_t_emb_3prong_$ERA", "shape", SystMap<>::init(0.71));
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process({"EMB", "jetFakes"})
+//       .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "jetFakes"})
+//       .AddSyst(cb, "CMS_scale_t_emb_3prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
 
-//   MC + embedded correlated uncertainty
+// //   MC + embedded correlated uncertainty
 
-  cb.cp()
-      .channel({"mt"})
-    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
-       .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
-      // .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes", "QCD"}, {"EMB", "QCDEMB"}}))
-      .AddSyst(cb, "CMS_scale_t_1prong_$ERA", "shape", SystMap<>::init(0.71));
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+//        .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
+//       // .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes", "QCD"}, {"EMB", "QCDEMB"}}))
+//       .AddSyst(cb, "CMS_scale_t_1prong_$ERA", "shape", SystMap<>::init(0.71));
 
-  cb.cp()
-      .channel({"mt"})
-    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
-      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
-      .AddSyst(cb, "CMS_scale_t_1prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+//       .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
+//       .AddSyst(cb, "CMS_scale_t_1prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
 
-  cb.cp()
-      .channel({"mt"})
-    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
-      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
-      .AddSyst(cb, "CMS_scale_t_3prong_$ERA", "shape", SystMap<>::init(0.71));
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+//       .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
+//       .AddSyst(cb, "CMS_scale_t_3prong_$ERA", "shape", SystMap<>::init(0.71));
 
-  cb.cp()
-      .channel({"mt"})
-    //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
-      .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
-      .AddSyst(cb, "CMS_scale_t_3prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
-}
+//   cb.cp()
+//       .channel({"mt"})
+//     //   .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB"}}))
+//       .process(JoinStr({{"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"}}))
+//       .AddSyst(cb, "CMS_scale_t_3prong1pizero_$ERA", "shape", SystMap<>::init(0.71));
+// }
 
   // ##########################################################################
   // Uncertainty: Jet energy scale
