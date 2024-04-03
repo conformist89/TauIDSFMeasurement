@@ -250,64 +250,63 @@ ES.setConstant(true);
          {1, "mt_Pt20to25"}
     };
 
-    sig_procs = {"EMB_Pt20to25"};
+    sig_procs = {"EMB_Pt20to25_0.0"};
     
 
   }else if (categories == "Pt25to30"){
         cats["mt"] = {
          {2, "mt_Pt25to30"}
     };
-    sig_procs = {"EMB_Pt25to30"};
+    sig_procs = {"EMB_Pt25to30_0.0"};
 
-    // std::cout <<":::::::::::THIS IS MY SIGNAL::::::"  << sig_procs[0] << std:: endl;
   
   }else if (categories == "Pt30to35"){
         cats["mt"] = {
          {3, "mt_Pt30to35"}
     };
-    sig_procs = {"EMB_Pt30to35"};
+    sig_procs = {"EMB_Pt30to35_0.0"};
   }
 
   else if (categories == "Pt35to40"){
         cats["mt"] = {
          {4, "mt_Pt35to40"}
     };
-    sig_procs = {"EMB_Pt35to40"};
+    sig_procs = {"EMB_Pt35to40_0.0"};
   }
 
     else if (categories == "PtGt40"){
         cats["mt"] = {
          {5, "mt_PtGt40"}
     };
-    sig_procs = {"EMB_PtGt40"};
+    sig_procs = {"EMB_PtGt40_0.0"};
   }
 
     else if (categories == "Inclusive"){
         cats["mt"] = {
          {6, "mt_Inclusive"}
     };
-    sig_procs = {"EMB_Inclusive"};
+    sig_procs = {"EMB_Inclusive_0.0"};
   }
 
     else if (categories == "DM0"){
         cats["mt"] = {
          {7, "mt_DM0"}
     };
-    sig_procs = {"EMB_DM0"};
+    sig_procs = {"EMB_DM0_0.0"};
   }
 
     else if (categories == "DM1"){
         cats["mt"] = {
          {8, "mt_DM1"}
     };
-    sig_procs = {"EMB_DM1"};
+    sig_procs = {"EMB_DM1_0.0"};
   }
 
     else if (categories == "DM10_11"){
         cats["mt"] = {
          {9, "mt_DM10_11"}
     };
-    sig_procs = {"EMB_DM10_11"};
+    sig_procs = {"EMB_DM10_11_0.0"};
   }
   
   else{
@@ -377,7 +376,7 @@ ES.setConstant(true);
     cb.AddProcesses(masses, {"htt"}, {era_tag}, {chn}, sig_procs, cats[chn],
                     true);
     // adding ES shifts
-    cb.AddProcesses(es_shifts, {"htt"}, {era_tag}, {chn}, es_signals, cats[chn], true);
+    // cb.AddProcesses(es_shifts, {"htt"}, {era_tag}, {chn}, es_signals, cats[chn], true);
   }
 
   // Add systematics
@@ -399,15 +398,6 @@ ES.setConstant(true);
             .ExtractShapes(input_dir[chn] + "htt_" + chn + ".inputs-sm-" +
                                era_tag + postfix + ".root",
                            "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
-
-
-            // extracting ES shifts
-            cb.cp()
-               .channel({chn})
-               .process(mssm_bbH_signals)
-               .ExtractShapes(input_dir[chn] + "htt_" + chn + ".inputs-sm-" +
-                                era_tag + postfix + ".root",
-                              "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
       }
     }
     std::cout << "[INFO] Extracted shapes for channel " << chn << std::endl;
