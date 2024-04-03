@@ -175,7 +175,7 @@ es_shifts.emplace_back("-0.4");
 es_shifts.emplace_back("-0.3");
 es_shifts.emplace_back("-0.2");
 es_shifts.emplace_back("-0.1");
-es_shifts.emplace_back("0.0");
+// es_shifts.emplace_back("0.0");
 es_shifts.emplace_back("0.1");
 es_shifts.emplace_back("0.2");
 es_shifts.emplace_back("0.3");
@@ -234,6 +234,29 @@ vector<string>es_signals = {"es_shifts"};
 RooRealVar ES("ES", "ES", 0.0, -2.5, 2.5);
 ES.setConstant(true);
 
+
+
+std::vector<std::string> es_shapes_cats_dm0(es_shits_size);
+for(int i = 0; i < es_shits_size; ++i) {
+  es_shapes_cats_dm0[i] = "DM0_"+es_shifts[i];
+}
+
+std::vector<std::string> es_shapes_cats_dm1(es_shits_size);
+for(int i = 0; i < es_shits_size; ++i) {
+  es_shapes_cats_dm1[i] = "DM1_"+es_shifts[i];
+}
+
+std::vector<std::string> es_shapes_cats_dm10_11(es_shits_size);
+for(int i = 0; i < es_shits_size; ++i) {
+  es_shapes_cats_dm10_11[i] = "DM10_11_"+es_shifts[i];
+}
+
+std::cout << "Elements of es_shapes_cats_dm0 vector:" << std::endl;
+for (const auto& element_dm0 : es_shapes_cats_dm0) {
+  std::cout << element_dm0 << std::endl;
+}
+
+std::cout << "Successfully executed" << std::endl;
   map<string, Categories> cats;
   // TODO: Introduce maps for decay mode dependent splitting.
   vector<string> sig_procs;
@@ -251,6 +274,7 @@ ES.setConstant(true);
     };
 
     sig_procs = {"EMB_Pt20to25_0.0"};
+
     
 
   }else if (categories == "Pt25to30"){
@@ -272,6 +296,7 @@ ES.setConstant(true);
          {4, "mt_Pt35to40"}
     };
     sig_procs = {"EMB_Pt35to40_0.0"};
+  
   }
 
     else if (categories == "PtGt40"){
@@ -279,6 +304,7 @@ ES.setConstant(true);
          {5, "mt_PtGt40"}
     };
     sig_procs = {"EMB_PtGt40_0.0"};
+   
   }
 
     else if (categories == "Inclusive"){
@@ -286,6 +312,7 @@ ES.setConstant(true);
          {6, "mt_Inclusive"}
     };
     sig_procs = {"EMB_Inclusive_0.0"};
+    
   }
 
     else if (categories == "DM0"){
@@ -293,6 +320,9 @@ ES.setConstant(true);
          {7, "mt_DM0"}
     };
     sig_procs = {"EMB_DM0_0.0"};
+    // for (int i = 0; i < es_shapes_cats_size; ++i) {
+    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm0[i]);
+    // }
   }
 
     else if (categories == "DM1"){
@@ -300,6 +330,9 @@ ES.setConstant(true);
          {8, "mt_DM1"}
     };
     sig_procs = {"EMB_DM1_0.0"};
+    // for (int i = 0; i < es_shapes_cats_size; ++i) {
+    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm1[i]);
+    // }
   }
 
     else if (categories == "DM10_11"){
@@ -307,6 +340,9 @@ ES.setConstant(true);
          {9, "mt_DM10_11"}
     };
     sig_procs = {"EMB_DM10_11_0.0"};
+    // for (int i = 0; i < es_shapes_cats_size; ++i) {
+    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm10_11[i]);
+    // }
   }
   
   else{
