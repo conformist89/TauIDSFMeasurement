@@ -320,30 +320,30 @@ std::cout << "Successfully executed" << std::endl;
         cats["mt"] = {
          {7, "mt_DM0"}
     };
-    sig_procs = {"EMB_DM0_0.0"};
-    for (int i = 0; i < es_shits_size; ++i) {
-      sig_procs.push_back("EMB_"+es_shapes_cats_dm0[i]);
-    }
+    sig_procs = {"EMB_DM0"};
+    // for (int i = 0; i < es_shits_size; ++i) {
+    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm0[i]);
+    // }
   }
 
     else if (categories == "DM1"){
         cats["mt"] = {
          {8, "mt_DM1"}
     };
-    sig_procs = {"EMB_DM1_0.0"};
-    for (int i = 0; i < es_shits_size; ++i) {
-      sig_procs.push_back("EMB_"+es_shapes_cats_dm1[i]);
-    }
+    sig_procs = {"EMB_DM1"};
+    // for (int i = 0; i < es_shits_size; ++i) {
+    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm1[i]);
+    // }
   }
 
     else if (categories == "DM10_11"){
         cats["mt"] = {
          {9, "mt_DM10_11"}
     };
-    sig_procs = {"EMB_DM10_11_0.0"};
-    for (int i = 0; i < es_shits_size; ++i) {
-      sig_procs.push_back("EMB_"+es_shapes_cats_dm10_11[i]);
-    }
+    sig_procs = {"EMB_DM10_11"};
+    // for (int i = 0; i < es_shits_size; ++i) {
+    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm10_11[i]);
+    // }
   }
   
   else{
@@ -410,7 +410,9 @@ std::cout << "Successfully executed" << std::endl;
     std::cout << "#################### I have to add this process: " << sig_procs[0] << std::endl;
 
     
-    cb.AddProcesses(masses, {"htt"}, {era_tag}, {chn}, sig_procs, cats[chn],
+    // cb.AddProcesses(masses, {"htt"}, {era_tag}, {chn}, sig_procs, cats[chn],
+    //                 true);
+    cb.AddProcesses(es_shifts, {"htt"}, {era_tag}, {chn}, sig_procs, cats[chn],
                     true);
     // adding ES shifts
     // cb.AddProcesses(es_shifts, {"htt"}, {era_tag}, {chn}, es_signals, cats[chn], true);
