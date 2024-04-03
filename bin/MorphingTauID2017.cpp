@@ -251,6 +251,7 @@ for(int i = 0; i < es_shits_size; ++i) {
   es_shapes_cats_dm10_11[i] = "DM10_11_"+es_shifts[i];
 }
 
+
 std::cout << "Elements of es_shapes_cats_dm0 vector:" << std::endl;
 for (const auto& element_dm0 : es_shapes_cats_dm0) {
   std::cout << element_dm0 << std::endl;
@@ -320,9 +321,9 @@ std::cout << "Successfully executed" << std::endl;
          {7, "mt_DM0"}
     };
     sig_procs = {"EMB_DM0_0.0"};
-    // for (int i = 0; i < es_shapes_cats_size; ++i) {
-    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm0[i]);
-    // }
+    for (int i = 0; i < es_shits_size; ++i) {
+      sig_procs.push_back("EMB_"+es_shapes_cats_dm0[i]);
+    }
   }
 
     else if (categories == "DM1"){
@@ -330,9 +331,9 @@ std::cout << "Successfully executed" << std::endl;
          {8, "mt_DM1"}
     };
     sig_procs = {"EMB_DM1_0.0"};
-    // for (int i = 0; i < es_shapes_cats_size; ++i) {
-    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm1[i]);
-    // }
+    for (int i = 0; i < es_shits_size; ++i) {
+      sig_procs.push_back("EMB_"+es_shapes_cats_dm1[i]);
+    }
   }
 
     else if (categories == "DM10_11"){
@@ -340,9 +341,9 @@ std::cout << "Successfully executed" << std::endl;
          {9, "mt_DM10_11"}
     };
     sig_procs = {"EMB_DM10_11_0.0"};
-    // for (int i = 0; i < es_shapes_cats_size; ++i) {
-    //   sig_procs.push_back("EMB_"+es_shapes_cats_dm10_11[i]);
-    // }
+    for (int i = 0; i < es_shits_size; ++i) {
+      sig_procs.push_back("EMB_"+es_shapes_cats_dm10_11[i]);
+    }
   }
   
   else{
