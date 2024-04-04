@@ -231,9 +231,27 @@ for (int i = 0; i < es_shapes_cats_size; ++i) {
 
 vector<string>es_signals = {"es_shifts"};
 
+
+
+
+ TString es_var_name("");
+
+if (categories == "DM0") {
+  es_var_name = "ES_DM0";
+
+  }else if (categories == "DM1"){
+     es_var_name = "ES_DM1";
+    } else if (categories == "DM10_11"){
+        es_var_name = "ES_DM10_11";
+
+    }  else{
+    throw std::runtime_error("Given categorization is not known.");}
+
+
 // Define MSSM model-independent mass parameter MH
-RooRealVar ES("ES", "ES", 0.1, -2.5, 2.5);
-ES.setConstant(true);
+  RooRealVar ES(es_var_name, es_var_name, 0.1, -2.5, 2.5);
+  ES.setConstant(true);
+
 
 
 
@@ -381,8 +399,6 @@ std::cout << "Successfully executed" << std::endl;
   cats["mm"] = {
       {100, "mm_control_region"},
   };
-
-
 
 
   vector<string> masses = {"125"};
