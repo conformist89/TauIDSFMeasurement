@@ -10,6 +10,7 @@
 #include "CombineHarvester/CombineTools/interface/Utilities.h"
 #include "CombineHarvester/SMRun2Legacy/interface/BinomialBinByBin.h"
 #include "CombineHarvester/TauIDSFMeasurement/interface/HttSystematics_TauIDRun2.h"
+#include "CombineHarvester/CombinePdfs/interface/CMSHistFuncFactory.h"
 #include "RooRealVar.h"
 #include "RooWorkspace.h"
 #include "TF1.h"
@@ -231,7 +232,7 @@ for (int i = 0; i < es_shapes_cats_size; ++i) {
 vector<string>es_signals = {"es_shifts"};
 
 // Define MSSM model-independent mass parameter MH
-RooRealVar ES("ES", "ES", 0.0, -2.5, 2.5);
+RooRealVar ES("ES", "ES", 0.1, -2.5, 2.5);
 ES.setConstant(true);
 
 
@@ -429,16 +430,29 @@ std::cout << "Successfully executed" << std::endl;
         "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
     if (chn == "mt") {
 
-      for (unsigned int i = 1; i <= cats[chn].size(); i++) {
-        cb.cp()
+      // for (unsigned int i = 1; i <= cats[chn].size(); i++) {
+        // cb.cp()
+        //     .channel({chn})
+        //     // .bin_id({static_cast<int>(i)})
+        //     .process(sig_procs)
+        //     .ExtractShapes(input_dir[chn] + "htt_" + chn + ".inputs-sm-" +
+        //                        era_tag + postfix + ".root",
+        //                    "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
+          // for (int j=0; j<es_shits_size; j++){
+
+            cb.cp()
             .channel({chn})
             // .bin_id({static_cast<int>(i)})
             .process(sig_procs)
             .ExtractShapes(input_dir[chn] + "htt_" + chn + ".inputs-sm-" +
-                               era_tag + postfix + ".root",
-                           "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
+                                era_tag + postfix + ".root",
+                            "$BIN/$PROCESS_$MASS", "$BIN/$PROCESS_$MASS_$SYSTEMATIC");
+
+          // }
+      // }
+         
       }
-    }
+
     std::cout << "[INFO] Extracted shapes for channel " << chn << std::endl;
     std::cout << "[INFO] Used input file  "
               << input_dir[chn] + "htt_" + chn + ".inputs-sm-" + era_tag +
@@ -714,7 +728,42 @@ std::cout << "Successfully executed" << std::endl;
   // the form: {analysis}_{channel}_{bin_id}_{era}
   ch::SetStandardBinNames(cb, "$ANALYSIS_$CHANNEL_$BINID_$ERA");
 
+  // adding b-b-b uncetnrainties
   cb.SetAutoMCStats(cb, 0.);
+
+
+  // morphing 
+
+  std::map<std::string, std::string> process_norm_map = {
+
+    {"EMB_DM0", "norm"},
+    {"EMB_DM1", "norm"},
+    {"EMB_DM10_11", "norm"}
+  };
+
+  std::map<std::string, RooAbsReal *> mass_var  = {
+    {"EMB_DM0", &ES},
+    {"EMB_DM1", &ES},
+    {"EMB_DM10_11", &ES}
+  };
+
+  // Setup morphed mssm signals for bsm analyses
+  RooWorkspace ws("htt", "htt");
+  
+  ws.import(ES);
+
+  // Perform morphing 
+
+  auto morphFactory = ch::CMSHistFuncFactory();
+  morphFactory.SetHorizontalMorphingVariable(mass_var);
+  morphFactory.Run(cb, ws, process_norm_map);
+
+
+  cb.AddWorkspace(ws);
+  cb.ExtractPdfs(cb, "htt", "$BIN_$PROCESS_morph");
+  cb.ExtractData("htt", "$BIN_data_obs");
+
+
 
   // Write out datacards. Naming convention important for rest of workflow. We
   // make one directory per chn-cat, one per chn and cmb. In this code we only
