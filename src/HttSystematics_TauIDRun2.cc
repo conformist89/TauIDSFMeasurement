@@ -519,12 +519,12 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
       .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "MUEMB"})
       .AddSyst(cb, "CMS_htt_doublemutrg_$ERA", "lnN", SystMap<>::init(1.04));
 
-  // TTbar contamination in embedded events: 10% shape uncertainty of assumed ttbar->tautau event shape  // this should be included to input ntuples
-  cb.cp()
-    .channel({"mt"})
-    // .process({"EMB"})
-    .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"})
-    .AddSyst(cb, "CMS_htt_emb_ttbar_$ERA", "shape", SystMap<>::init(1.00));
+//   // TTbar contamination in embedded events: 10% shape uncertainty of assumed ttbar->tautau event shape  // this should be included to input ntuples
+//   cb.cp()
+//     .channel({"mt"})
+//     // .process({"EMB"})
+//     .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive"})
+//     .AddSyst(cb, "CMS_htt_emb_ttbar_$ERA", "shape", SystMap<>::init(1.00));
 
 //   cb.cp()
 //       .channel({"mt"})

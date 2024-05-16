@@ -150,7 +150,22 @@ int main(int argc, char **argv) {
   //   es_shifts.push_back(std::to_string(i));
   // }
 vector<string> es_shifts;
-es_shifts.reserve(51);
+es_shifts.reserve(81);
+es_shifts.emplace_back("-4.0");
+es_shifts.emplace_back("-3.9");
+es_shifts.emplace_back("-3.8");
+es_shifts.emplace_back("-3.7");
+es_shifts.emplace_back("-3.6");
+es_shifts.emplace_back("-3.5");
+es_shifts.emplace_back("-3.4");
+es_shifts.emplace_back("-3.3");
+es_shifts.emplace_back("-3.2");
+es_shifts.emplace_back("-3.1");
+es_shifts.emplace_back("-3.0");
+es_shifts.emplace_back("-2.9");
+es_shifts.emplace_back("-2.8");
+es_shifts.emplace_back("-2.7");
+es_shifts.emplace_back("-2.6");
 es_shifts.emplace_back("-2.5");
 es_shifts.emplace_back("-2.4");
 es_shifts.emplace_back("-2.3");
@@ -202,7 +217,21 @@ es_shifts.emplace_back("2.2");
 es_shifts.emplace_back("2.3");
 es_shifts.emplace_back("2.4");
 es_shifts.emplace_back("2.5");
-
+es_shifts.emplace_back("2.6");
+es_shifts.emplace_back("2.7");
+es_shifts.emplace_back("2.8");
+es_shifts.emplace_back("2.9");
+es_shifts.emplace_back("3.0");
+es_shifts.emplace_back("3.1");
+es_shifts.emplace_back("3.2");
+es_shifts.emplace_back("3.3");
+es_shifts.emplace_back("3.4");
+es_shifts.emplace_back("3.5");
+es_shifts.emplace_back("3.6");
+es_shifts.emplace_back("3.7");
+es_shifts.emplace_back("3.8");
+es_shifts.emplace_back("3.9");
+es_shifts.emplace_back("4.0");
   
 int es_shits_size = es_shifts.size(); 
 
@@ -249,7 +278,7 @@ if (categories == "DM0") {
 
 
 // Define MSSM model-independent mass parameter MH
-  RooRealVar ES(es_var_name, es_var_name, 0.1, -2.5, 2.5);
+  RooRealVar ES(es_var_name, es_var_name, 0.1, -4.0, 4.0);
   ES.setConstant(true);
 
 
@@ -470,6 +499,8 @@ std::cout << "Successfully executed" << std::endl;
       }
 
     std::cout << "[INFO] Extracted shapes for channel " << chn << std::endl;
+    std::cout<<  "$BIN/$PROCESS_$MASS" << std :: endl;
+    std::cout<<  "$BIN/$PROCESS_$MASS_$SYSTEMATIC" << std :: endl;
     std::cout << "[INFO] Used input file  "
               << input_dir[chn] + "htt_" + chn + ".inputs-sm-" + era_tag +
                      postfix + ".root"
