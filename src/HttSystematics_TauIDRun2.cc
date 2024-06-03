@@ -111,7 +111,8 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
     //   .process({"EMB", "MUEMB"})
     //   .process({"EMB", "MUEMB"})
       .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "MUEMB"})
-      .AddSyst(cb, "CMS_eff_trigger_emb_mt_$ERA", "shape", SystMap<>::init(1.00));
+    //   .AddSyst(cb, "CMS_eff_trigger_emb_mt_$ERA", "shape", SystMap<>::init(1.00));
+    .AddSyst(cb, "CMS_eff_trigger_emb_mt_$ERA", "lnN", SystMap<>::init(1.02));
 
     std::cout << "Before Muon ID systematics" << std::endl;
     cb.cp().PrintAll();
