@@ -104,31 +104,31 @@ int main(int argc, char **argv) {
   // Define background processes
   map<string, VString> bkg_procs;
   VString bkgs, bkgs_mm;
-  bkgs = {"W", "QCD", "ZL", "ZJ", "TTT", "TTL", "TTJ", "VVJ", "VVT", "VVL"};
+  bkgs = {"W", "QCDJETS", "ZTT_NLO", "TTT", "VVT"};
 
   // bkgs_mm = {"W", "TT", "VV"};
 
-  if (embedding) {
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTT"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVT"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "QCD"), bkgs.end());
-    bkgs = JoinStr({bkgs, {"QCD"}});
-    bkgs_mm.erase(std::remove(bkgs_mm.begin(), bkgs_mm.end(), "ZLL"),
-                  bkgs_mm.end());
-    bkgs_mm.erase(std::remove(bkgs_mm.begin(), bkgs_mm.end(), "TT"),
-                  bkgs_mm.end());
-    bkgs_mm.erase(std::remove(bkgs_mm.begin(), bkgs_mm.end(), "VV"),
-                  bkgs_mm.end());
-  }
-  if (jetfakes) {
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "QCD"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "QCD"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "W"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVJ"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTJ"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
-    bkgs = JoinStr({bkgs, {"jetFakes"}});
-  }
+  // if (embedding) {
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTT"), bkgs.end());
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVT"), bkgs.end());
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "QCD"), bkgs.end());
+  //   bkgs = JoinStr({bkgs, {"QCD"}});
+  //   bkgs_mm.erase(std::remove(bkgs_mm.begin(), bkgs_mm.end(), "ZLL"),
+  //                 bkgs_mm.end());
+  //   bkgs_mm.erase(std::remove(bkgs_mm.begin(), bkgs_mm.end(), "TT"),
+  //                 bkgs_mm.end());
+  //   bkgs_mm.erase(std::remove(bkgs_mm.begin(), bkgs_mm.end(), "VV"),
+  //                 bkgs_mm.end());
+  // }
+  // if (jetfakes) {
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "QCD"), bkgs.end());
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "QCD"), bkgs.end());
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "W"), bkgs.end());
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVJ"), bkgs.end());
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTJ"), bkgs.end());
+  //   bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
+  //   bkgs = JoinStr({bkgs, {"jetFakes"}});
+  // }
 
   bkgs_mm = {"W", "TTL", "VVL", "QCD", "MUEMB"};
   std::cout << "[INFO] Considerung the following processes:\n";
@@ -149,75 +149,26 @@ int main(int argc, char **argv) {
   vector<string> sig_procs;
   if (categories == "all") {
     cats["mt"] = {
-         {1, "mt_Pt20to25"}, {2, "mt_Pt25to30"}, {3, "mt_Pt30to35"},
-         {4, "mt_Pt35to40"}, {5, "mt_PtGt40"},   {6, "mt_Inclusive"},
-         {7, "mt_DM0"},      {8, "mt_DM1"},      {9, "mt_DM10_11"},
+         {1, "mt_fj_softdrop_50_90"}, {2, "mt_fj_softdrop_90_120"}, 
     };
   
 
-  }else if (categories == "Pt20to25"){
+  }else if (categories == "fj_softdrop_50_90"){
         cats["mt"] = {
-         {1, "mt_Pt20to25"}
+         {1, "mt_fj_softdrop_50_90"}
     };
 
-    sig_procs = {"EMB_Pt20to25"};
+    sig_procs = {"GGH_fj_softdrop_50_90"};
     
 
-  }else if (categories == "Pt25to30"){
+  }else if (categories == "fj_softdrop_90_120"){
         cats["mt"] = {
-         {2, "mt_Pt25to30"}
+         {2, "mt_fj_softdrop_90_120"}
     };
-    sig_procs = {"EMB_Pt25to30"};
+    sig_procs = {"GGH_fj_softdrop_90_120"};
 
-    // std::cout <<":::::::::::THIS IS MY SIGNAL::::::"  << sig_procs[0] << std:: endl;
+    std::cout <<":::::::::::THIS IS MY SIGNAL::::::"  << sig_procs[0] << std:: endl;
   
-  }else if (categories == "Pt30to35"){
-        cats["mt"] = {
-         {3, "mt_Pt30to35"}
-    };
-    sig_procs = {"EMB_Pt30to35"};
-  }
-
-  else if (categories == "Pt35to40"){
-        cats["mt"] = {
-         {4, "mt_Pt35to40"}
-    };
-    sig_procs = {"EMB_Pt35to40"};
-  }
-
-    else if (categories == "PtGt40"){
-        cats["mt"] = {
-         {5, "mt_PtGt40"}
-    };
-    sig_procs = {"EMB_PtGt40"};
-  }
-
-    else if (categories == "Inclusive"){
-        cats["mt"] = {
-         {6, "mt_Inclusive"}
-    };
-    sig_procs = {"EMB_Inclusive"};
-  }
-
-    else if (categories == "DM0"){
-        cats["mt"] = {
-         {7, "mt_DM0"}
-    };
-    sig_procs = {"EMB_DM0"};
-  }
-
-    else if (categories == "DM1"){
-        cats["mt"] = {
-         {8, "mt_DM1"}
-    };
-    sig_procs = {"EMB_DM1"};
-  }
-
-    else if (categories == "DM10_11"){
-        cats["mt"] = {
-         {9, "mt_DM10_11"}
-    };
-    sig_procs = {"EMB_DM10_11"};
   }
   
   else{
@@ -414,11 +365,11 @@ int main(int argc, char **argv) {
 
   // }
 
-  for(int i=7; i<=9; i++){
+  // for(int i=7; i<=9; i++){
 
-    cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
+  //   cb.cp().bin_id({i}).channel({"mt"}).RenameSystematic(cb,"CMS_ExtrapSSOS_mt_Run2018", "CMS_ExtrapSSOS_mt_mt_"+std::to_string(i)+"Run2018");
 
-  }
+  // }
 
   //   for(int i=1; i<=5; i++){
 
@@ -578,6 +529,9 @@ int main(int argc, char **argv) {
   // This function modifies every entry to have a standardised bin name of
   // the form: {analysis}_{channel}_{bin_id}_{era}
   ch::SetStandardBinNames(cb, "$ANALYSIS_$CHANNEL_$BINID_$ERA");
+
+    // adding b-b-b uncetnrainties
+  cb.SetAutoMCStats(cb, 0.);
 
   // Write out datacards. Naming convention important for rest of workflow. We
   // make one directory per chn-cat, one per chn and cmb. In this code we only
