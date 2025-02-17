@@ -99,52 +99,31 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
   // Notes:
   // - FIXME: References?
   // ##########################################################################
-// TODO add trigger sf shifts
-//   cb.cp()
-//       .channel({"mt"})
-//       .process(mc_processes)
-//       .AddSyst(cb, "CMS_eff_trigger_mt_$ERA", "shape", SystMap<>::init(1.00));
 
-  // 100% uncorrelated for embedded
-//   cb.cp()
-//       .channel({"mt", "mm"})
-//     //   .process({"EMB", "MUEMB"})
-//     //   .process({"EMB", "MUEMB"})
-//       .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "MUEMB"})
-//       .AddSyst(cb, "CMS_eff_trigger_emb_mt_$ERA", "shape", SystMap<>::init(1.00));
-
-    // std::cout << "Before Muon ID systematics" << std::endl;
-    // cb.cp().PrintAll();
+//  Muon trig 
+    cb.cp()
+        .channel({"mt"})
+        .process(JoinStr({mc_processes, {"GGH_fj_softdrop_50_90", "GGH_fj_softdrop_90_120"}}))
+        .AddSyst(cb, "CMS_eff_m_trig", "lnN", SystMap<>::init(1.02));
 
 //  Muon ID 
     cb.cp()
-        .channel({"mt"})
-        .process({"GGH_fj_softdrop_50_90", "GGH_fj_softdrop_90_120"})
-        .AddSyst(cb, "CMS_eff_m_emb", "lnN", SystMap<>::init(1.02));
+      .channel({"mt"})
+      .process(JoinStr({mc_processes, {"GGH_fj_softdrop_50_90", "GGH_fj_softdrop_90_120"}}))
+      .AddSyst(cb, "CMS_eff_m_id", "lnN", SystMap<>::init(1.02));
 
-    // cb.cp()
-    //     .channel({"mm"})
-    //     .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0", "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "MUEMB"})
-    //     .AddSyst(cb, "CMS_eff_m_emb", "lnN", SystMap<>::init(1.04));
-    // cb.cp()
-    //     .channel({"mt"})
-    //     .process(mc_processes)
-    //     .AddSyst(cb, "CMS_eff_m_mc", "lnN", SystMap<>::init(1.02));
-    // cb.cp()
-    //     .channel({"mm"})
-    //     .process(mc_processes)
-    //     .AddSyst(cb, "CMS_eff_m_mc", "lnN", SystMap<>::init(1.04));
+
+
+//  Muon ES 
+    cb.cp()
+    .channel({"mt"})
+    .process(JoinStr({mc_processes, {"GGH_fj_softdrop_50_90", "GGH_fj_softdrop_90_120"}}))
+    .AddSyst(cb, "CMS_eff_m_es", "lnN", SystMap<>::init(1.02));
+
 
     std::cout << "After Muon ID systematics" << std::endl;
 
     cb.cp().PrintAll();
-
-
-    // cb.cp()
-    //     .channel({"mt"})
-    //     .process({"EMB_Pt20to25", "EMB_Pt25to30", "EMB_Pt30to35", "EMB_Pt35to40", "EMB_PtGt40", "EMB_DM0" , "EMB_DM1", "EMB_DM10_11", "EMB_Inclusive", "MUEMB"})
-    //     .AddSyst(cb, "CMS_eff_m_emb", "lnN", SystMap<>::init(0.98));
-
 
 
   // ##########################################################################
@@ -511,13 +490,6 @@ void AddTauIDRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding
   // - https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauTauEmbeddingSamples2016
   // Notes:
   // ##########################################################################
-
-  // Embedded Normalization: No Lumi, Zjxsec information used, instead derived from data using dimuon selection efficiency
-  cb.cp()
-      .channel({"mt", "mm"})
-    //   .process({"EMB", "MUEMB"})
-      .process({"GGH_fj_softdrop_50_90", "GGH_fj_softdrop_90_120"})
-      .AddSyst(cb, "CMS_htt_doublemutrg_$ERA", "lnN", SystMap<>::init(1.04));
 
 //   // TTbar contamination in embedded events: 10% shape uncertainty of assumed ttbar->tautau event shape
 //   cb.cp()
